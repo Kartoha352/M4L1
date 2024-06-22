@@ -71,6 +71,15 @@ def handle_rating(message):
     bot.send_message(message.chat.id, res)
 
 
+@bot.message_handler(commands=['get_my_score'])
+def handle_get_my_score(message):
+    info = manager.get_winners_img("user_id")
+    prizes = [x[0] for x in info]
+    image_paths = os.listdir('img')
+    image_paths = [f'img/{x}' if x in prizes else f'hidden_img/{x}' for x in image_paths]
+    collage = create_collage(image_paths)
+    bot.send_photo(message.chat.id, caption="Вот список картинок!",photo=collage)
+
 def polling_thread():
     bot.polling(none_stop=True)
 
